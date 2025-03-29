@@ -1,5 +1,7 @@
+<?php include 'header.php'; ?>
+
 <?php
-session_start();
+//session_start();
 require 'config.php';
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
