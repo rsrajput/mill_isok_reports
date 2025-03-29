@@ -7,11 +7,22 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Handle new record submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mill']) && isset($_POST['test_date'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mill']) && isset($_POST['test_date']) && isset($_FILES['report'])) {
     $mill = $_POST['mill'];
     $test_date = $_POST['test_date'];
-    $stmt = $pdo->prepare("INSERT INTO mill_tests (mill, test_date) VALUES (?, ?)");
-    $stmt->execute([$mill, $test_date]);
+    
+    // Handle file upload
+    $uploadDir = 'uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+    
+    $fileName = time() . '_' . basename($_FILES['report']['name']);
+    $filePath = $uploadDir . $fileName;
+    move_uploaded_file($_FILES['report']['tmp_name'], $filePath);
+    
+    $stmt = $pdo->prepare("INSERT INTO mill_tests (mill, test_date, report_path) VALUES (?, ?, ?)");
+    $stmt->execute([$mill, $test_date, $filePath]);
     header("Location: dashboard.php");
     exit;
 }
@@ -22,7 +33,7 @@ $page = $_GET['page'] ?? 1;
 $limit = 20;
 $offset = ($page - 1) * $limit;
 
-$query = "SELECT id, mill, test_date, DATE_ADD(test_date, INTERVAL 6 MONTH) AS next_due_date FROM mill_tests WHERE mill LIKE ? ORDER BY test_date DESC LIMIT $limit OFFSET $offset";
+$query = "SELECT id, mill, test_date, DATE_ADD(test_date, INTERVAL 6 MONTH) AS next_due_date, report_path FROM mill_tests WHERE mill LIKE ? ORDER BY test_date DESC LIMIT $limit OFFSET $offset";
 $stmt = $pdo->prepare($query);
 $stmt->execute(["%$search%"]);
 $results = $stmt->fetchAll();
@@ -36,16 +47,17 @@ $results = $stmt->fetchAll();
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
         th { cursor: pointer; }
-        .overdue-yes { background-color: #FFB6C1; color: #000000; }
-        .overdue-no { background-color: #9AFF9A; color: #000000; }
+        .overdue-yes { background-color: red; color: white; }
+        .overdue-no { background-color: green; color: white; }
     </style>
 </head>
 <body>
     <h1>Mill Test Records</h1>
     
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <input type="text" name="mill" required placeholder="Mill Name">
         <input type="date" name="test_date" required>
+        <input type="file" name="report" accept="application/pdf" required>
         <button type="submit">Add Record</button>
     </form>
     
@@ -69,7 +81,7 @@ $results = $stmt->fetchAll();
                 <tr>
                     <td><?= $sno++ ?></td>
                     <td><?= htmlspecialchars($row['mill']) ?></td>
-                    <td><?= $row['test_date'] ?></td>
+                    <td><a href="<?= htmlspecialchars($row['report_path']) ?>" target="_blank"> <?= $row['test_date'] ?> </a></td>
                     <td><?= $row['next_due_date'] ?></td>
                     <td class="<?= strtotime($row['next_due_date']) < time() ? 'overdue-yes' : 'overdue-no' ?>">
                         <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
