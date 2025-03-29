@@ -94,17 +94,17 @@ $results = $stmt->fetchAll();
             color: white;
             cursor: pointer;
         }
-        .overdue-yes {
-            background-color: red;
-            color: white;
+        .overdue {
             padding: 5px;
             border-radius: 5px;
+            color: white;
+            display: inline-block;
         }
-        .overdue-no {
+        .overdue.yes {
+            background-color: red;
+        }
+        .overdue.no {
             background-color: green;
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
         }
         .no-report {
             background-color: lightcoral;
@@ -145,11 +145,6 @@ $results = $stmt->fetchAll();
             <button type="submit" class="btn btn-add">Add Record</button>
         </form>
         
-        <form method="get">
-            <input type="text" name="search" placeholder="Search by Mill" value="<?= htmlspecialchars($search) ?>">
-            <button type="submit" class="btn">Search</button>
-        </form>
-        
         <table>
             <thead>
                 <tr>
@@ -174,7 +169,7 @@ $results = $stmt->fetchAll();
                             </a>
                         </td>
                         <td><?= $row['next_due_date'] ?></td>
-                        <td class="<?= strtotime($row['next_due_date']) < time() ? 'overdue-yes' : 'overdue-no' ?>">
+                        <td class="overdue <?= strtotime($row['next_due_date']) < time() ? 'yes' : 'no' ?>">
                             <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
                         </td>
                         <td>
