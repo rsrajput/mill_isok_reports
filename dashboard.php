@@ -17,12 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mill']) && isset($_POS
         mkdir($uploadDir, 0777, true);
     }
     
-    $fileName = time() . '_' . basename($_FILES['report']['name']);
-    $filePath = $uploadDir . $fileName;
-    move_uploaded_file($_FILES['report']['tmp_name'], $filePath);
+    $fileName = $_FILES['report']['name'] ? time() . '_' . basename($_FILES['report']['name']) : null;
+    $filePath = $fileName ? $uploadDir . $fileName : null;
+    if ($filePath) {
+        move_uploaded_file($_FILES['report']['tmp_name'], $filePath);
+    }
     
     $stmt = $pdo->prepare("INSERT INTO mill_tests (mill, test_date, report_path) VALUES (?, ?, ?)");
     $stmt->execute([$mill, $test_date, $filePath]);
+    header("Location: dashboard.php");
+    exit;
+}
+
+// Handle record deletion
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $stmt = $pdo->prepare("DELETE FROM mill_tests WHERE id = ?");
+    $stmt->execute([$_GET['delete']]);
     header("Location: dashboard.php");
     exit;
 }
@@ -49,6 +59,7 @@ $results = $stmt->fetchAll();
         th { cursor: pointer; }
         .overdue-yes { background-color: red; color: white; }
         .overdue-no { background-color: green; color: white; }
+        .no-report { background-color: lightcoral; }
     </style>
 </head>
 <body>
@@ -57,7 +68,7 @@ $results = $stmt->fetchAll();
     <form method="post" enctype="multipart/form-data">
         <input type="text" name="mill" required placeholder="Mill Name">
         <input type="date" name="test_date" required>
-        <input type="file" name="report" accept="application/pdf" required>
+        <input type="file" name="report" accept="application/pdf">
         <button type="submit">Add Record</button>
     </form>
     
@@ -74,6 +85,7 @@ $results = $stmt->fetchAll();
                 <th>Isokinetic Test Date</th>
                 <th>Next Due Date</th>
                 <th>Overdue</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -81,10 +93,20 @@ $results = $stmt->fetchAll();
                 <tr>
                     <td><?= $sno++ ?></td>
                     <td><?= htmlspecialchars($row['mill']) ?></td>
-                    <td><a href="<?= htmlspecialchars($row['report_path']) ?>" target="_blank"> <?= $row['test_date'] ?> </a></td>
+                    <td>
+                        <a href="<?= htmlspecialchars($row['report_path'] ?? '#') ?>" 
+                           target="_blank" 
+                           class="<?= $row['report_path'] ? '' : 'no-report' ?>">
+                           <?= $row['test_date'] ?>
+                        </a>
+                    </td>
                     <td><?= $row['next_due_date'] ?></td>
                     <td class="<?= strtotime($row['next_due_date']) < time() ? 'overdue-yes' : 'overdue-no' ?>">
                         <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
+                    </td>
+                    <td>
+                        <a href="edit_record.php?id=<?= $row['id'] ?>">Edit</a> |
+                        <a href="dashboard.php?delete=<?= $row['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -99,3 +121,4 @@ $results = $stmt->fetchAll();
     <a href="logout.php">Logout</a>
 </body>
 </html>
+
