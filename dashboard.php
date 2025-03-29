@@ -54,71 +54,132 @@ $results = $stmt->fetchAll();
 <head>
     <title>Mill Test Dashboard</title>
     <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { cursor: pointer; }
-        .overdue-yes { background-color: red; color: white; }
-        .overdue-no { background-color: green; color: white; }
-        .no-report { background-color: lightcoral; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .overdue-yes {
+            background-color: red;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .overdue-no {
+            background-color: green;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .no-report {
+            background-color: lightcoral;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            color: black;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <h1>Mill Test Records</h1>
-    
-    <form method="post" enctype="multipart/form-data">
-        <input type="text" name="mill" required placeholder="Mill Name">
-        <input type="date" name="test_date" required>
-        <input type="file" name="report" accept="application/pdf">
-        <button type="submit">Add Record</button>
-    </form>
-    
-    <form method="get">
-        <input type="text" name="search" placeholder="Search by Mill" value="<?= htmlspecialchars($search) ?>">
-        <button type="submit">Search</button>
-    </form>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>S No</th>
-                <th>Mill</th>
-                <th>Isokinetic Test Date</th>
-                <th>Next Due Date</th>
-                <th>Overdue</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $sno = $offset + 1; foreach ($results as $row): ?>
+    <div class="container">
+        <h1>Mill Test Records</h1>
+        
+        <form method="post" enctype="multipart/form-data">
+            <input type="text" name="mill" required placeholder="Mill Name">
+            <input type="date" name="test_date" required>
+            <input type="file" name="report" accept="application/pdf">
+            <button type="submit" class="btn btn-add">Add Record</button>
+        </form>
+        
+        <form method="get">
+            <input type="text" name="search" placeholder="Search by Mill" value="<?= htmlspecialchars($search) ?>">
+            <button type="submit" class="btn">Search</button>
+        </form>
+        
+        <table>
+            <thead>
                 <tr>
-                    <td><?= $sno++ ?></td>
-                    <td><?= htmlspecialchars($row['mill']) ?></td>
-                    <td>
-                        <a href="<?= htmlspecialchars($row['report_path'] ?? '#') ?>" 
-                           target="_blank" 
-                           class="<?= $row['report_path'] ? '' : 'no-report' ?>">
-                           <?= $row['test_date'] ?>
-                        </a>
-                    </td>
-                    <td><?= $row['next_due_date'] ?></td>
-                    <td class="<?= strtotime($row['next_due_date']) < time() ? 'overdue-yes' : 'overdue-no' ?>">
-                        <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
-                    </td>
-                    <td>
-                        <a href="edit_record.php?id=<?= $row['id'] ?>">Edit</a> |
-                        <a href="dashboard.php?delete=<?= $row['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
+                    <th>S No</th>
+                    <th>Mill</th>
+                    <th>Isokinetic Test Date</th>
+                    <th>Next Due Date</th>
+                    <th>Overdue</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    
-    <div>
-        <a href="?page=<?= max(1, $page - 1) ?>&search=<?= htmlspecialchars($search) ?>">Previous</a>
-        <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>">Next</a>
+            </thead>
+            <tbody>
+                <?php $sno = $offset + 1; foreach ($results as $row): ?>
+                    <tr>
+                        <td><?= $sno++ ?></td>
+                        <td><?= htmlspecialchars($row['mill']) ?></td>
+                        <td>
+                            <a href="<?= htmlspecialchars($row['report_path'] ?? '#') ?>" 
+                               target="_blank" 
+                               class="<?= $row['report_path'] ? '' : 'no-report' ?>">
+                               <?= $row['test_date'] ?>
+                            </a>
+                        </td>
+                        <td><?= $row['next_due_date'] ?></td>
+                        <td class="<?= strtotime($row['next_due_date']) < time() ? 'overdue-yes' : 'overdue-no' ?>">
+                            <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
+                        </td>
+                        <td>
+                            <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
+                            <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <div>
+            <a href="?page=<?= max(1, $page - 1) ?>&search=<?= htmlspecialchars($search) ?>" class="btn">Previous</a>
+            <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>" class="btn">Next</a>
+        </div>
+        
+        <a href="logout.php" class="btn btn-delete">Logout</a>
     </div>
-    
-    <a href="logout.php">Logout</a>
 </body>
 </html>
-
