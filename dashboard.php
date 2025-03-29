@@ -67,6 +67,17 @@ $results = $stmt->fetchAll();
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .logout {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 8px 12px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
         }
         table {
             width: 100%;
@@ -124,6 +135,7 @@ $results = $stmt->fetchAll();
 </head>
 <body>
     <div class="container">
+        <a href="logout.php" class="logout">Logout</a>
         <h1>Mill Test Records</h1>
         
         <form method="post" enctype="multipart/form-data">
@@ -173,13 +185,6 @@ $results = $stmt->fetchAll();
                 <?php endforeach; ?>
             </tbody>
         </table>
-        
-        <div>
-            <a href="?page=<?= max(1, $page - 1) ?>&search=<?= htmlspecialchars($search) ?>" class="btn">Previous</a>
-            <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>" class="btn">Next</a>
-        </div>
-        
-        <a href="logout.php" class="btn btn-delete">Logout</a>
     </div>
 </body>
 </html>
