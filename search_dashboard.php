@@ -44,14 +44,8 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
 }
 
 // Fetch mill test data
-$search = $_GET['search'] ?? '';
-$page = $_GET['page'] ?? 1;
-$limit = 20;
-$offset = ($page - 1) * $limit;
-
 $query = "SELECT id, mill, test_date, DATE_ADD(test_date, INTERVAL 6 MONTH) AS next_due_date, report_path FROM mill_tests ORDER BY test_date DESC";
 $stmt = $pdo->query($query);
-#$stmt->execute(["%$search%"]);
 $results = $stmt->fetchAll();
 ?>
 
@@ -173,13 +167,6 @@ $results = $stmt->fetchAll();
         <a href="change_password.php" class="btn btn-add">Change Password</a>
         <a href="logout.php" class="logout">Logout</a>
         <h1>Mill Test Records</h1>
- 
-         <form method="post" enctype="multipart/form-data">
-             <input type="text" name="mill" required placeholder="Mill Name">
-             <input type="date" name="test_date" required>
-             <input type="file" name="report" accept="application/pdf">
-             <button type="submit" class="btn btn-add">Add Record</button>
-         </form>
         <input type="text" id="searchBox" onkeyup="searchTable()" placeholder="Search records...">
         <table id="millTable">
             <thead>
@@ -193,17 +180,11 @@ $results = $stmt->fetchAll();
                 </tr>
             </thead>
             <tbody>
-                <?php $sno = $offset + 1; foreach ($results as $row): ?>
+                <?php $sno = 1; foreach ($results as $row): ?>
                     <tr>
                         <td><?= $sno++ ?></td>
                         <td><?= htmlspecialchars($row['mill']) ?></td>
-                        <td>
-                            <a href="<?= htmlspecialchars($row['report_path'] ?? '#') ?>" 
-                               target="_blank" 
-                               class="<?= $row['report_path'] ? '' : 'no-report' ?>">
-                               <?= $row['test_date'] ?>
-                            </a>
-                        </td>
+                        <td><?= $row['test_date'] ?></td>
                         <td><?= $row['next_due_date'] ?></td>
                         <td class="overdue <?= strtotime($row['next_due_date']) < time() ? 'yes' : 'no' ?>">
                             <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
