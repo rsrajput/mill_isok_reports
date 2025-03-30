@@ -3,14 +3,19 @@ require 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
     
-    $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-    if ($stmt->execute([$username, $password])) {
-        header("Location: login.php");
-        exit;
+    if ($user) {
+        $new_password = substr(md5(uniqid(rand(), true)), 0, 8);
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE username = ?");
+        $stmt->execute([$hashed_password, $username]);
+        
+        echo "Your new temporary password is: <strong>" . $new_password . "</strong> (Please login and change it immediately)";
     } else {
-        $error = "Registration failed. Username may already exist.";
+        echo "Username not found.";
     }
 }
 ?>
@@ -18,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Forgot Password</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -79,18 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="container">
-        <h2>Register</h2>
-        <?php if (isset($error)): ?>
-            <p style="color: red;"> <?= $error ?> </p>
-        <?php endif; ?>
+        <h2>Forgot Password</h2>
         <form method="POST">
             <div class="form-group">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Enter your username" required>
             </div>
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Password" required>
-            </div>
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn">Reset Password</button>
         </form>
         <a href="login.php" class="btn-secondary">Back to Login</a>
     </div>

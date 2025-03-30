@@ -138,6 +138,8 @@ $results = $stmt->fetchAll();
 <body>
     <div class="container">
         <a href="logout.php" class="logout">Logout</a>
+        <a href="change_password.php" class="btn btn-add">Change Password</a>
+
         <h1>Mill Test Records</h1>
         
         <form method="post" enctype="multipart/form-data">
