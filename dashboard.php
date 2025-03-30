@@ -144,6 +144,16 @@ $results = $stmt->fetchAll();
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        .btn-admin {
+            background-color: #ff9800;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
     </style>
     <script>
         function sortTable(n) {
@@ -171,6 +181,9 @@ $results = $stmt->fetchAll();
 <body>
     <div class="container">
         <a href="change_password.php" class="btn btn-add">Change Password</a>
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+            <a href="admin.php" class="btn btn-admin">Admin Panel</a>
+        <?php endif; ?>
         <a href="logout.php" class="logout">Logout</a>
         <h1>Mill Test Records</h1>
  
@@ -217,5 +230,7 @@ $results = $stmt->fetchAll();
             </tbody>
         </table>
     </div>
+
+
 </body>
 </html>

@@ -36,8 +36,7 @@ $users = $stmt->fetchAll();
 <html>
 <head>
     <title>Admin Panel</title>
-</head>
-<style>
+    <style>
         body { font-family: Arial, sans-serif; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
@@ -45,9 +44,29 @@ $users = $stmt->fetchAll();
         .btn-admin { background-color: #28a745; color: white; }
         .btn-remove { background-color: #dc3545; color: white; }
     </style>
+    <style>
+    .btn-dashboard {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .btn-dashboard:hover {
+        background-color: #0056b3;
+    }
+    </style>
+</head>
+
+
 <body>
     <div class="container">
         <h1>User Administration</h1>
+        <a href="dashboard.php" class="btn btn-dashboard">Dashboard</a>
+
         <table>
             <thead>
                 <tr>
