@@ -1,33 +1,43 @@
 <?php
-session_start();
-require 'config.php'; // Database connection
+include 'header.php';
+require 'config.php';
 
-// Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
+if (!isset($_SESSION['user_id']) || !$_SESSION['is_admin']) {
+    header("Location: login.php");
+    exit;
+}
+
+// Handle make admin/remove admin
+if (isset($_GET['toggle_admin']) && is_numeric($_GET['toggle_admin'])) {
+    $user_id = $_GET['toggle_admin'];
+    $stmt = $pdo->prepare("UPDATE users SET is_admin = NOT is_admin WHERE id = ?");
+    $stmt->execute([$user_id]);
     header("Location: admin.php");
-    exit();
+    exit;
+}
+
+// Handle user deletion
+if (isset($_GET['delete_user']) && is_numeric($_GET['delete_user'])) {
+    $user_id = $_GET['delete_user'];
+    if ($user_id != $_SESSION['user_id']) { // Prevent self-deletion
+        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->execute([$user_id]);
+    }
+    header("Location: admin.php");
+    exit;
 }
 
 // Fetch all users
 $stmt = $pdo->query("SELECT id, username, is_admin FROM users");
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Handle admin toggle
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
-    $user_id = $_POST['user_id'];
-    $is_admin = $_POST['is_admin'] == 1 ? 0 : 1;
-    $stmt = $pdo->prepare("UPDATE users SET is_admin = ? WHERE id = ?");
-    $stmt->execute([$is_admin, $user_id]);
-    header("Location: admin.php");
-    exit();
-}
+$users = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Admin Panel</title>
-    <style>
+</head>
+<style>
         body { font-family: Arial, sans-serif; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
@@ -35,34 +45,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
         .btn-admin { background-color: #28a745; color: white; }
         .btn-remove { background-color: #dc3545; color: white; }
     </style>
-</head>
 <body>
-    <h2>Admin Panel - Manage Users</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Role</th>
-            <th>Action</th>
-        </tr>
-        <?php foreach ($users as $user) { ?>
-            <tr>
-                <td><?php echo $user['id']; ?></td>
-                <td><?php echo $user['username']; ?></td>
-                <td><?php echo $user['is_admin'] ? 'Admin' : 'User'; ?></td>
-                <td>
-                    <form method="POST">
-                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                        <input type="hidden" name="is_admin" value="<?php echo $user['is_admin']; ?>">
-                        <button type="submit" class="btn <?php echo $user['is_admin'] ? 'btn-remove' : 'btn-admin'; ?>">
-                            <?php echo $user['is_admin'] ? 'Remove Admin' : 'Make Admin'; ?>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        <?php } ?>
-    </table>
-    <br>
-    <a href="dashboard.php">Back to Dashboard</a>
+    <div class="container">
+        <h1>User Administration</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($user['username']) ?></td>
+                        <td><?= $user['is_admin'] ? 'Admin' : 'User' ?></td>
+                        <td>
+                            <a href="admin.php?toggle_admin=<?= $user['id'] ?>" class="btn btn-toggle">
+                            <button type="submit" class="btn <?php echo $user['is_admin'] ? 'btn-remove' : 'btn-admin'; ?>">
+                                <?= $user['is_admin'] ? 'Remove Admin' : 'Make Admin' ?></button>
+                            </a>
+                            <?php if ($user['id'] != $_SESSION['user_id']): ?>
+                                <a href="admin.php?delete_user=<?= $user['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">
+                                    Delete
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

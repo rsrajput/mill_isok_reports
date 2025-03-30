@@ -1,0 +1,10 @@
+[30-Mar-2025 11:40:26 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1234' for key 'users.username' in C:\laragon\www\mill_isok_reports\register.php:9
+Stack trace:
+#0 C:\laragon\www\mill_isok_reports\register.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\laragon\www\mill_isok_reports\register.php on line 9
+[30-Mar-2025 11:40:49 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1234' for key 'users.username' in C:\laragon\www\mill_isok_reports\register.php:9
+Stack trace:
+#0 C:\laragon\www\mill_isok_reports\register.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\laragon\www\mill_isok_reports\register.php on line 9
