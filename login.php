@@ -82,6 +82,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .link:hover {
             text-decoration: underline;
         }
+        .btn-dashboard {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #28a745; /* Green color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .btn-dashboard:hover {
+            background-color: #218838;
+        }
+
     </style>
 </head>
 <body>
@@ -102,6 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <br>
         <a href="register.php" class="btn btn-secondary">Register</a>
         <a href="forgot_password.php" class="btn btn-secondary">Forgot Password</a>
+        <br><br>
+        <a href="dashboard.php" class="btn-dashboard">Go to Dashboard</a>
     </div>
 </body>
 </html>

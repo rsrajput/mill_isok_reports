@@ -2,10 +2,10 @@
 
 <?php
 require 'config.php';
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: login.php");
+//     exit;
+// }
 
 // Handle new record submission
 if (
@@ -180,11 +180,17 @@ $results = $stmt->fetchAll();
 </head>
 <body>
     <div class="container">
-        <a href="change_password.php" class="btn btn-add">Change Password</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="change_password.php" class="btn btn-add">Change Password</a>
+        <?php endif; ?>
         <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
             <a href="admin.php" class="btn btn-admin">Admin Panel</a>
         <?php endif; ?>
-        <a href="logout.php" class="logout">Logout</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="logout.php" class="logout">Logout</a>
+        <?php else: ?>
+            <a href="login.php" class="logout">Login</a>
+        <?php endif; ?>
         <h1>Mill Test Records</h1>
  
          <form method="post" enctype="multipart/form-data">
@@ -202,7 +208,9 @@ $results = $stmt->fetchAll();
                     <th onclick="sortTable(2)">Isokinetic Test Date</th>
                     <th onclick="sortTable(3)">Next Due Date</th>
                     <th onclick="sortTable(4)">Overdue</th>
-                    <th>Actions</th>
+                    <?php if (isset($_SESSION['user_id'])): ?> 
+                        <th>Actions</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -221,10 +229,12 @@ $results = $stmt->fetchAll();
                         <td class="overdue <?= strtotime($row['next_due_date']) < time() ? 'yes' : 'no' ?>">
                             <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
                         </td>
-                        <td>
-                            <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
-                            <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
-                        </td>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <td>
+                                <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
+                                <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
+                            </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
