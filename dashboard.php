@@ -35,13 +35,34 @@ if (
     exit;
 }
 
+// // Handle record deletion
+// if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+//     $stmt = $pdo->prepare("DELETE FROM mill_tests WHERE id = ?");
+//     $stmt->execute([$_GET['delete']]);
+//     header("Location: dashboard.php");
+//     exit;
+// }
+
 // Handle record deletion
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    // Fetch the file path before deleting the record
+    $stmt = $pdo->prepare("SELECT report_path FROM mill_tests WHERE id = ?");
+    $stmt->execute([$_GET['delete']]);
+    $record = $stmt->fetch();
+
+    // Delete the associated file if it exists
+    if ($record && !empty($record['report_path']) && file_exists($record['report_path'])) {
+        unlink($record['report_path']); // Delete file from uploads folder
+    }
+
+    // Now delete the record from the database
     $stmt = $pdo->prepare("DELETE FROM mill_tests WHERE id = ?");
     $stmt->execute([$_GET['delete']]);
+
     header("Location: dashboard.php");
     exit;
 }
+
 
 // Fetch mill test data
 $search = $_GET['search'] ?? '';
