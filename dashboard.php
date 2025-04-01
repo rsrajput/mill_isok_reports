@@ -153,6 +153,53 @@ $results = $stmt->fetchAll();
             display: inline-block;
             margin-right: 10px;
         }
+        .add-record-form {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-record-form form {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .add-record-form input,
+        .add-record-form button {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .add-record-form input {
+            width: 22%; /* Adjust width so all fit in one line */
+        }
+
+        .add-record-form input[type="file"] {
+            width: 25%;
+        }
+
+        .add-record-form button {
+            background: #28a745;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s ease;
+            width: 15%;
+        }
+
+        .add-record-form button:hover {
+            background: #218838;
+        }
+
+
 
     </style>
     <script>
@@ -193,12 +240,22 @@ $results = $stmt->fetchAll();
         <?php endif; ?>
         <h1>Mill Isokinetic Test Records</h1>
  
-         <form method="post" enctype="multipart/form-data">
+         <!-- <form method="post" enctype="multipart/form-data">
              <input type="text" name="mill" required placeholder="Mill Name">
              <input type="date" name="test_date" required>
              <input type="file" name="report" accept="application/pdf">
              <button type="submit" class="btn btn-add">Add Record</button>
-         </form>
+         </form> -->
+         <div class="add-record-form">
+            <h2>Add New Record</h2>
+            <form method="post" enctype="multipart/form-data">
+                <input type="text" name="mill" required placeholder="Mill Name">
+                <input type="date" name="test_date" required>
+                <input type="file" name="report" accept="application/pdf">
+                <button type="submit">Add Record</button>
+            </form>
+        </div>
+
         <input type="text" id="searchBox" onkeyup="searchTable()" placeholder="Search records...">
         <table id="millTable">
             <thead>
