@@ -96,5 +96,7 @@ $users = $stmt->fetchAll();
             </tbody>
         </table>
     </div>
+    <?php include 'footer.php'; ?>
+
 </body>
 </html>

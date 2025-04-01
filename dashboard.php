@@ -191,7 +191,7 @@ $results = $stmt->fetchAll();
         <?php else: ?>
             <a href="login.php" class="logout">Login</a>
         <?php endif; ?>
-        <h1>Mill Test Records</h1>
+        <h1>Mill Isokinetic Test Records</h1>
  
          <form method="post" enctype="multipart/form-data">
              <input type="text" name="mill" required placeholder="Mill Name">
@@ -241,6 +241,6 @@ $results = $stmt->fetchAll();
         </table>
     </div>
 
-
+    <?php include 'footer.php'; ?>
 </body>
 </html>

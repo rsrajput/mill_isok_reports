@@ -105,5 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <a href="dashboard.php" class="btn btn-cancel">Cancel</a>
         </form>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

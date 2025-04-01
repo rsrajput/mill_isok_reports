@@ -93,5 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <a href="login.php" class="btn-secondary">Back to Login</a>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

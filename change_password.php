@@ -120,5 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <a href="dashboard.php" class="btn-secondary">Back to Dashboard</a>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>
