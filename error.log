@@ -21,3 +21,13 @@ Stack trace:
 [30-Mar-2025 13:45:42 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\laragon\www\mill_isok_reports\login.php on line 103
 [30-Mar-2025 13:46:01 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\laragon\www\mill_isok_reports\login.php on line 103
 [30-Mar-2025 13:46:03 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\laragon\www\mill_isok_reports\login.php on line 103
+[31-Mar-2025 04:09:42 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '007345' for key 'users.username' in C:\laragon\www\mill_isok_reports\register.php:9
+Stack trace:
+#0 C:\laragon\www\mill_isok_reports\register.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\laragon\www\mill_isok_reports\register.php on line 9
+[31-Mar-2025 11:43:38 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1234' for key 'users.username' in C:\laragon\www\eemg\register.php:9
+Stack trace:
+#0 C:\laragon\www\eemg\register.php(9): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\laragon\www\eemg\register.php on line 9
