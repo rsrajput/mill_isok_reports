@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 01, 2025 at 01:58 PM
+-- Generation Time: Apr 02, 2025 at 04:55 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -51,7 +51,7 @@ INSERT INTO `mill_tests` (`id`, `mill`, `test_date`, `report_path`) VALUES
 (21, 'Mill 2H', '2024-05-18', NULL),
 (22, 'Mill 2K', '2024-05-06', NULL),
 (23, 'Mill 2C', '2024-05-06', NULL),
-(24, 'Mill 2A', '2024-05-20', NULL),
+(24, 'Mill 2A OLD', '2024-05-20', NULL),
 (25, 'Mill 2J', '2024-05-20', NULL),
 (26, 'Mill 2G', '2024-06-15', NULL),
 (27, 'Mill 2E', '2024-06-03', NULL),
@@ -60,7 +60,7 @@ INSERT INTO `mill_tests` (`id`, `mill`, `test_date`, `report_path`) VALUES
 (30, 'Mill 3H', '2024-12-12', NULL),
 (31, 'Mill 3E', '2024-02-08', NULL),
 (32, 'Mill 3C', '2024-02-08', NULL),
-(33, 'Mill 3A', '2024-01-29', NULL),
+(33, 'Mill 3A OLD', '2024-01-29', NULL),
 (34, 'Mill 3F', '2024-01-29', NULL),
 (35, 'Mill 3D', '2024-02-08', NULL),
 (36, 'Mill 3G', '2024-02-08', NULL),
@@ -86,17 +86,19 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `is_admin` tinyint(1) NOT NULL DEFAULT '0'
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
+  `role` enum('viewer','editor','admin') NOT NULL DEFAULT 'viewer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `is_admin`) VALUES
-(4, 'admin_user', '$2y$10$8ntca39w8kmfmaQskk0xSeTDGas9/CvbY/lMXDyNkkWfcOSh7VjQq', 1),
-(10, '1234', '$2y$10$.KTSrQrsHVf1ti/99JQIQ.x3jX3AYvHWS5JnBlwWScng2F/6Iziby', 0),
-(17, '007345', '$2y$10$CxvDMsIRQaHsypFT8edo1ezqrsSnjn7obgvwr1n1bgE0Vzx1BonRu', 1);
+INSERT INTO `users` (`id`, `username`, `password`, `is_admin`, `role`) VALUES
+(4, 'admin_user', '$2y$10$8ntca39w8kmfmaQskk0xSeTDGas9/CvbY/lMXDyNkkWfcOSh7VjQq', 1, 'admin'),
+(10, '1234', '$2y$10$.KTSrQrsHVf1ti/99JQIQ.x3jX3AYvHWS5JnBlwWScng2F/6Iziby', 0, 'viewer'),
+(17, '007345', '$2y$10$CxvDMsIRQaHsypFT8edo1ezqrsSnjn7obgvwr1n1bgE0Vzx1BonRu', 1, 'admin'),
+(21, 'viewer', '$2y$10$mJ8p2eIMN1X15H/6SSg.lu2P/9q5ZJ.Xmv9hF8wjI8L4UbJzny3ki', 0, 'viewer');
 
 --
 -- Indexes for dumped tables
@@ -129,7 +131,7 @@ ALTER TABLE `mill_tests`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

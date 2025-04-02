@@ -251,7 +251,7 @@ $results = $stmt->fetchAll();
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="change_password.php" class="btn btn-add">Change Password</a>
         <?php endif; ?>
-        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+        <?php if ($_SESSION['role'] === 'admin'): ?>
             <a href="admin.php" class="btn btn-admin">Admin Panel</a>
         <?php endif; ?>
         <?php if (isset($_SESSION['user_id'])): ?>
@@ -267,7 +267,7 @@ $results = $stmt->fetchAll();
              <input type="file" name="report" accept="application/pdf">
              <button type="submit" class="btn btn-add">Add Record</button>
          </form> -->
-         <div class="add-record-form">
+         <!-- <div class="add-record-form">
             <h2>Add New Record</h2>
             <form method="post" enctype="multipart/form-data">
                 <input type="text" name="mill" required placeholder="Mill Name">
@@ -275,7 +275,15 @@ $results = $stmt->fetchAll();
                 <input type="file" name="report" accept="application/pdf">
                 <button type="submit">Add Record</button>
             </form>
-        </div>
+        </div> -->
+        <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'editor'): ?>
+            <form method="post" enctype="multipart/form-data">
+                <input type="text" name="mill" required placeholder="Mill Name">
+                <input type="date" name="test_date" required>
+                <input type="file" name="report" accept="application/pdf">
+                <button type="submit" class="btn btn-add">Add Record</button>
+            </form>
+        <?php endif; ?>
 
         <input type="text" id="searchBox" onkeyup="searchTable()" placeholder="Search records...">
         <table id="millTable">
@@ -309,13 +317,14 @@ $results = $stmt->fetchAll();
                         <td><?= $row['next_due_date'] ?></td>
                         <td class="overdue <?= $isOverdue ? 'yes' : 'no' ?>">
                             <?= $isOverdue ? 'Yes' : 'No' ?>
-                        </td>
-                            <?php if (isset($_SESSION['user_id'])): ?>
-                                <td>
+                            <td>
+                                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'editor'): ?>
                                     <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
                                     <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
-                                </td>
-                            <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+
+                            <?php ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -2,23 +2,32 @@
 session_start();
 require 'config.php';
 
+$flash_message = '';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    $stmt = $pdo->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
-    
+
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['is_admin'] = $user['is_admin'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role']; // Store role in session
 
         header("Location: dashboard.php");
         exit;
     } else {
-        $error = "Invalid username or password.";
+        $flash_message = "Invalid username or password.";
     }
+}
+
+// Check if there is a flash message from registration
+if (isset($_SESSION['flash_message'])) {
+    $flash_message = $_SESSION['flash_message'];
+    unset($_SESSION['flash_message']); // Remove after displaying
 }
 ?>
 
@@ -30,94 +39,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            text-align: center;
+            padding: 50px;
         }
         .container {
             background: white;
-            padding: 25px;
+            padding: 20px;
+            width: 300px;
+            margin: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 350px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
+        input {
+            width: 90%;
             padding: 10px;
-            border: 1px solid #ccc;
+            margin: 10px 0;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
-            transition: 0.3s;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        .btn {
-            width: 100%;
-            padding: 10px;
+        button {
+            background-color: #28a745;
+            color: white;
             border: none;
+            padding: 10px;
+            width: 100%;
             border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
         }
-        .btn:hover {
-            background-color: #0056b3;
+        .flash-message {
+            color: red;
+            margin-bottom: 10px;
         }
-        .link {
-            display: block;
-            margin-top: 10px;
-            color: #007bff;
-            text-decoration: none;
-        }
-        .link:hover {
-            text-decoration: underline;
-        }
-        .btn-dashboard {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #28a745; /* Green color */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
+        .links {
             margin-top: 10px;
         }
-        .btn-dashboard:hover {
-            background-color: #218838;
-        }
-
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
-        <?php if (isset($error)): ?>
-            <p style="color: red;"> <?= $error ?> </p>
-        <?php endif; ?>
-        <form method="POST">
-            <div class="form-group">
-                <input type="text" name="username" placeholder="Username" required>
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Password" required>
-            </div>
-            <button type="submit" class="btn">Login</button>
-        </form>
-        <br>
-        <a href="register.php" class="btn btn-secondary">Register</a>
-        <a href="forgot_password.php" class="btn btn-secondary">Forgot Password</a>
-        <br><br>
-        <a href="dashboard.php" class="btn-dashboard">Go to Dashboard</a>
+
+<div class="container">
+    <h2>Login</h2>
+    
+    <?php if ($flash_message): ?>
+        <p class="flash-message"><?= htmlspecialchars($flash_message) ?></p>
+    <?php endif; ?>
+
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="links">
+        <a href="register.php">Register</a> | <a href="forgot_password.php">Forgot Password?</a>
     </div>
+</div>
+
 </body>
 </html>

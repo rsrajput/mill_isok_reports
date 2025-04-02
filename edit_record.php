@@ -7,6 +7,11 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+if ($_SESSION['role'] === 'viewer') {
+    header("Location: dashboard.php");
+    exit;
+}
+
 
 // Check if record ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
