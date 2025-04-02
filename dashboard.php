@@ -292,27 +292,30 @@ $results = $stmt->fetchAll();
                 </tr>
             </thead>
             <tbody>
-                <?php $sno = $offset + 1; foreach ($results as $row): ?>
+                <?php $sno = 1; foreach ($results as $row): ?>
+                    <?php
+                    $isOverdue = strtotime($row['next_due_date']) < time();
+                    $millName = strtolower(trim($row['mill'])); // Convert to lowercase for case-insensitivity
+
+                    // Check if mill name ends with "old"
+                    if (substr($millName, -3) === 'old') {
+                        $isOverdue = false; // Force "No" for overdue
+                    }
+                    ?>
                     <tr>
                         <td><?= $sno++ ?></td>
                         <td><?= htmlspecialchars($row['mill']) ?></td>
-                        <td>
-                            <a href="<?= htmlspecialchars($row['report_path'] ?? '#') ?>" 
-                               target="_blank" 
-                               class="<?= $row['report_path'] ? '' : 'no-report' ?>">
-                               <?= $row['test_date'] ?>
-                            </a>
-                        </td>
+                        <td><?= $row['test_date'] ?></td>
                         <td><?= $row['next_due_date'] ?></td>
-                        <td class="overdue <?= strtotime($row['next_due_date']) < time() ? 'yes' : 'no' ?>">
-                            <?= strtotime($row['next_due_date']) < time() ? 'Yes' : 'No' ?>
+                        <td class="overdue <?= $isOverdue ? 'yes' : 'no' ?>">
+                            <?= $isOverdue ? 'Yes' : 'No' ?>
                         </td>
-                        <?php if (isset($_SESSION['user_id'])): ?>
-                            <td>
-                                <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
-                                <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
-                            </td>
-                        <?php endif; ?>
+                            <?php if (isset($_SESSION['user_id'])): ?>
+                                <td>
+                                    <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
+                                    <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
+                                </td>
+                            <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -322,3 +325,9 @@ $results = $stmt->fetchAll();
     <?php include 'footer.php'; ?>
 </body>
 </html>
+                        <!-- <?php if (isset($_SESSION['user_id'])): ?>
+                            <td>
+                                <a href="edit_record.php?id=<?= $row['id'] ?>" class="btn btn-edit">Edit</a>
+                                <a href="dashboard.php?delete=<?= $row['id'] ?>" class="btn btn-delete" onclick="return confirm('Are you sure?')">Delete</a>
+                            </td>
+                            <?php endif; ?> -->
