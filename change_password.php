@@ -25,6 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
         $stmt->execute([$hashed_password, $_SESSION['user_id']]);
         $success = "Password changed successfully.";
+        // Set a flash message for success
+        $_SESSION['flash_message'] = "Password changed successfully!";
+        header("Location: dashboard.php");
+        exit;
+
     }
 }
 ?>

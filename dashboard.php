@@ -294,8 +294,8 @@ $results = $stmt->fetchAll();
                     <th onclick="sortTable(2)">Isokinetic Test Date</th>
                     <th onclick="sortTable(3)">Next Due Date</th>
                     <th onclick="sortTable(4)">Overdue</th>
-                    <?php if (isset($_SESSION['user_id'])): ?> 
-                        <th>Actions</th>
+                    <?php if ($_SESSION['role'] !== 'viewer'): ?> 
+                        <th>Actions</th> 
                     <?php endif; ?>
                 </tr>
             </thead>
@@ -313,7 +313,15 @@ $results = $stmt->fetchAll();
                     <tr>
                         <td><?= $sno++ ?></td>
                         <td><?= htmlspecialchars($row['mill']) ?></td>
-                        <td><?= $row['test_date'] ?></td>
+                        <!-- <td><?= $row['test_date'] ?></td> -->
+                        <td style="background-color: <?= empty($row['report_path']) ? 'lightcoral' : 'transparent' ?>;">
+                            <a href="<?= htmlspecialchars($row['report_path'] ?? '#') ?>" 
+                            target="_blank" 
+                            style="display: block; width: 100%; height: 100%; padding: 5px; text-decoration: none;">
+                            <?= htmlspecialchars($row['test_date']) ?>
+                            </a>
+                        </td>
+
                         <td><?= $row['next_due_date'] ?></td>
                         <td class="overdue <?= $isOverdue ? 'yes' : 'no' ?>">
                             <?= $isOverdue ? 'Yes' : 'No' ?>
