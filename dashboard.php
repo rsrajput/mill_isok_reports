@@ -219,6 +219,19 @@ $results = $stmt->fetchAll();
         .add-record-form button:hover {
             background: #218838;
         }
+        .dashboard-heading {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            color: #007bff;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
 
 
 
@@ -259,7 +272,8 @@ $results = $stmt->fetchAll();
         <?php else: ?>
             <a href="login.php" class="logout">Login</a>
         <?php endif; ?>
-        <h1>Mill Isokinetic Test Records</h1>
+        <h1 class="dashboard-heading">Mill Isokinetic Test Records</h1>
+
  
          <!-- <form method="post" enctype="multipart/form-data">
              <input type="text" name="mill" required placeholder="Mill Name">
@@ -277,12 +291,15 @@ $results = $stmt->fetchAll();
             </form>
         </div> -->
         <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'editor'): ?>
+            <div class="add-record-form">
+            <h2>Add New Record</h2>
             <form method="post" enctype="multipart/form-data">
                 <input type="text" name="mill" required placeholder="Mill Name">
                 <input type="date" name="test_date" required>
                 <input type="file" name="report" accept="application/pdf">
-                <button type="submit" class="btn btn-add">Add Record</button>
+                <button type="submit">Add Record</button>
             </form>
+        </div>
         <?php endif; ?>
 
         <input type="text" id="searchBox" onkeyup="searchTable()" placeholder="Search records...">

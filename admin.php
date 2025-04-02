@@ -50,15 +50,48 @@ $users = $stmt->fetchAll();
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background-color: #007bff; color: white; }
-        .btn { padding: 5px 10px; border-radius: 5px; text-decoration: none; cursor: pointer; border: none; }
+        /* .btn { padding: 5px 10px; border-radius: 5px; text-decoration: none; cursor: pointer; border: none; } */
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
         .btn-update { background-color: #ffc107; color: black; }
         .btn-delete { background-color: #dc3545; color: white; }
+
+        .btn-edit {
+            background-color: #ffc107;
+            color: black;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+        }
+        .dashboard-heading {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            color: #007bff;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>User Management</h1>
-        <a href="dashboard.php" class="btn">Back to Dashboard</a>
+    <h1 class="dashboard-heading">User Management</h1>
+        <a href="dashboard.php" class="btn btn-add">Back to Dashboard</a>
         
         <?php if (isset($_SESSION['flash_message'])): ?>
             <p style="color: green;"><?= $_SESSION['flash_message'] ?></p>
