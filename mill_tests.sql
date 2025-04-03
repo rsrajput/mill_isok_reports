@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 02, 2025 at 04:55 AM
+-- Generation Time: Apr 03, 2025 at 01:36 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -41,7 +41,7 @@ CREATE TABLE `mill_tests` (
 INSERT INTO `mill_tests` (`id`, `mill`, `test_date`, `report_path`) VALUES
 (12, 'Mill 1H', '2025-03-03', 'uploads/1743502668_Mill  1H fineness Report _03-03-2025.pdf'),
 (13, 'Mill 1G', '2025-03-03', 'uploads/1743502695_Mill  1G  fineness Report _03-03-2025.pdf'),
-(14, 'Mill 1C', '2025-03-22', 'uploads/1743502745_Mill 1C fineness Report  22.03.2025 (2).pdf'),
+(14, 'Mill 1C', '2025-03-19', 'uploads/1743502745_Mill 1C fineness Report  22.03.2025 (2).pdf'),
 (15, 'Mill 1C', '2024-12-16', 'uploads/1743502807_Mill  1C  fineness Report _16-12-2024.pdf'),
 (16, 'Mill 2A', '2025-02-10', 'uploads/1743502915_Mill 2A   fineness Report _10-02-2025.pdf.pdf'),
 (17, 'Mill 4C', '2025-02-18', 'uploads/1743503061_Mill 4C  fineness report_18-02-2025.pdf'),
@@ -74,7 +74,10 @@ INSERT INTO `mill_tests` (`id`, `mill`, `test_date`, `report_path`) VALUES
 (44, 'Mill 4A', '2024-08-23', NULL),
 (45, 'Mill 4B', '2024-08-23', NULL),
 (46, 'Mill 4D', '2024-08-23', NULL),
-(47, 'Mill 4G', '2024-08-23', NULL);
+(47, 'Mill 4G', '2024-08-23', NULL),
+(55, 'Mill 2K', '2025-04-02', NULL),
+(56, 'Mill 2F', '2025-04-03', NULL),
+(57, 'Mill 2H', '2025-04-03', NULL);
 
 -- --------------------------------------------------------
 
@@ -96,9 +99,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `is_admin`, `role`) VALUES
 (4, 'admin_user', '$2y$10$8ntca39w8kmfmaQskk0xSeTDGas9/CvbY/lMXDyNkkWfcOSh7VjQq', 1, 'admin'),
-(10, '1234', '$2y$10$.KTSrQrsHVf1ti/99JQIQ.x3jX3AYvHWS5JnBlwWScng2F/6Iziby', 0, 'viewer'),
+(10, '1234', '$2y$10$.KTSrQrsHVf1ti/99JQIQ.x3jX3AYvHWS5JnBlwWScng2F/6Iziby', 0, 'editor'),
 (17, '007345', '$2y$10$CxvDMsIRQaHsypFT8edo1ezqrsSnjn7obgvwr1n1bgE0Vzx1BonRu', 1, 'admin'),
-(21, 'viewer', '$2y$10$mJ8p2eIMN1X15H/6SSg.lu2P/9q5ZJ.Xmv9hF8wjI8L4UbJzny3ki', 0, 'viewer');
+(21, 'viewer', '$2y$10$mJ8p2eIMN1X15H/6SSg.lu2P/9q5ZJ.Xmv9hF8wjI8L4UbJzny3ki', 0, 'viewer'),
+(22, '123', '$2y$10$Gp.xXDeepP2fBCyg2288AeLE4.X.gwhJ6ofA5lbBc8ZoNNplE1qyq', 0, 'viewer');
 
 --
 -- Indexes for dumped tables
@@ -125,13 +129,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `mill_tests`
 --
 ALTER TABLE `mill_tests`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
