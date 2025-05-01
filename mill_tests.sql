@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 03, 2025 at 01:36 PM
+-- Generation Time: May 01, 2025 at 01:00 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -47,37 +47,45 @@ INSERT INTO `mill_tests` (`id`, `mill`, `test_date`, `report_path`) VALUES
 (17, 'Mill 4C', '2025-02-18', 'uploads/1743503061_Mill 4C  fineness report_18-02-2025.pdf'),
 (18, 'Mill 3J', '2025-02-18', 'uploads/1743503089_Mill 3J Finess report_18-02-2025.pdf'),
 (19, 'Mill 3A', '2025-02-18', 'uploads/1743503117_Mill 3A Finess report_18-02-2025.pdf'),
-(20, 'Mill 2D', '2024-05-18', NULL),
-(21, 'Mill 2H', '2024-05-18', NULL),
-(22, 'Mill 2K', '2024-05-06', NULL),
+(20, 'Mill 2D OLD', '2024-05-18', NULL),
+(21, 'Mill 2H OLD', '2024-05-18', NULL),
+(22, 'Mill 2K OLD', '2024-05-06', NULL),
 (23, 'Mill 2C', '2024-05-06', NULL),
 (24, 'Mill 2A OLD', '2024-05-20', NULL),
 (25, 'Mill 2J', '2024-05-20', NULL),
 (26, 'Mill 2G', '2024-06-15', NULL),
 (27, 'Mill 2E', '2024-06-03', NULL),
-(28, 'Mill 2F', '2024-06-03', NULL),
+(28, 'Mill 2F OLD', '2024-06-03', NULL),
 (29, 'Mill 3E', '2024-12-12', NULL),
 (30, 'Mill 3H', '2024-12-12', NULL),
-(31, 'Mill 3E', '2024-02-08', NULL),
+(31, 'Mill 3E OLD', '2024-02-08', NULL),
 (32, 'Mill 3C', '2024-02-08', NULL),
 (33, 'Mill 3A OLD', '2024-01-29', NULL),
-(34, 'Mill 3F', '2024-01-29', NULL),
+(34, 'Mill 3F OLD', '2024-01-29', NULL),
 (35, 'Mill 3D', '2024-02-08', NULL),
-(36, 'Mill 3G', '2024-02-08', NULL),
+(36, 'Mill 3G OLD', '2024-02-08', NULL),
 (37, 'Mill 3F', '2024-08-03', NULL),
 (38, 'Mill 3G', '2024-08-03', NULL),
-(39, 'Mill 3H', '2024-01-29', NULL),
-(40, 'Mill 3J', '2024-01-29', NULL),
+(39, 'Mill 3H OLD', '2024-01-29', NULL),
+(40, 'Mill 3J OLD', '2024-01-29', NULL),
 (41, 'Mill 4E', '2024-08-28', NULL),
-(42, 'Mill 4f', '2024-08-28', NULL),
+(42, 'Mill 4F', '2024-08-28', NULL),
 (43, 'Mill 4H', '2024-08-28', NULL),
 (44, 'Mill 4A', '2024-08-23', NULL),
 (45, 'Mill 4B', '2024-08-23', NULL),
 (46, 'Mill 4D', '2024-08-23', NULL),
 (47, 'Mill 4G', '2024-08-23', NULL),
-(55, 'Mill 2K', '2025-04-02', NULL),
-(56, 'Mill 2F', '2025-04-03', NULL),
-(57, 'Mill 2H', '2025-04-03', NULL);
+(55, 'Mill 2K', '2025-04-02', 'uploads/1744889948_Mill 2K fineness Report _11.04.2025.pdf'),
+(56, 'Mill 2F', '2025-04-03', 'uploads/1744889936_Mill 2F fineness Report _11.04.2025.pdf'),
+(57, 'Mill 2H', '2025-04-03', 'uploads/1744889921_Mill 2H  fineness Report _11.04.2025.pdf'),
+(58, 'Mill 1J', '2025-01-08', 'uploads/1744119853_Mill  1 J  fineness Report _ 08.01.2025.pdf'),
+(59, 'Mill 1E', '2024-12-10', 'uploads/1744119995_Mill 1D, 1E, 1K, 1J_ 12-12-2024.pdf'),
+(60, 'Mill 1D', '2024-12-12', 'uploads/1744120026_Mill 1D, 1E, 1K, 1J_ 12-12-2024.pdf'),
+(61, 'Mill 1J', '2024-12-12', 'uploads/1744120057_Mill 1D, 1E, 1K, 1J_ 12-12-2024.pdf'),
+(62, 'Mill 1K', '2024-12-12', 'uploads/1744120082_Mill 1D, 1E, 1K, 1J_ 12-12-2024.pdf'),
+(63, 'Mill 1G OLD', '2024-06-17', 'uploads/1744120193_Mill 1G & 1H   report_17-06-2024.pdf'),
+(64, 'Mill 1H OLD', '2024-06-17', 'uploads/1744120212_Mill 1G & 1H   report_17-06-2024.pdf'),
+(66, 'Mill 2D', '2025-04-19', 'uploads/1745230593_Mill 2D fineness Report _19-04-2025.pdf');
 
 -- --------------------------------------------------------
 
@@ -129,7 +137,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `mill_tests`
 --
 ALTER TABLE `mill_tests`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `users`
